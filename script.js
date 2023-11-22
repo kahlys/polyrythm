@@ -5,7 +5,6 @@ const rectangle = document.querySelector(".rectangle");
 const playButton = document.getElementById("play-button");
 const speedLabel = document.getElementById("speed");
 const speedRange = document.getElementById("speedRange");
-console.log(speedRange.value);
 const squareData = [];
 
 const keyLen = squares.length;
@@ -81,10 +80,10 @@ function stopAnimation() {
 
 playButton.addEventListener("click", () => {
   if (animationId === null) {
+    playButton.src = "assets/images/pause_button.svg";
     animate();
-    playButton.textContent = "Stop";
   } else {
+    playButton.src = "assets/images/play_button.svg";
     stopAnimation();
-    playButton.textContent = "Play";
   }
 });
