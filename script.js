@@ -5,7 +5,6 @@ const rectangle = document.querySelector(".rectangle");
 const playButton = document.getElementById("play-button");
 const speedLabel = document.getElementById("speed");
 const speedRange = document.getElementById("speedRange");
-console.log(speedRange.value);
 const squareData = [];
 
 const keyLen = squares.length;
