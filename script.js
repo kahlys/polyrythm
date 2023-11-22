@@ -80,10 +80,10 @@ function stopAnimation() {
 
 playButton.addEventListener("click", () => {
   if (animationId === null) {
+    playButton.src = "assets/pause_button.svg";
     animate();
-    playButton.textContent = "Stop";
   } else {
+    playButton.src = "assets/play_button.svg";
     stopAnimation();
-    playButton.textContent = "Play";
   }
 });
