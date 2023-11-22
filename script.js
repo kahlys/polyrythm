@@ -78,7 +78,15 @@ function stopAnimation() {
   }
 }
 
-playButton.addEventListener("click", () => {
+playButton.addEventListener("click", toggleAnimation);
+
+document.addEventListener("keydown", function(event) {
+  if (event.code === 'Space') {
+    toggleAnimation();
+  }
+});
+
+function toggleAnimation() {
   if (animationId === null) {
     playButton.src = "assets/images/pause_button.svg";
     animate();
@@ -86,4 +94,4 @@ playButton.addEventListener("click", () => {
     playButton.src = "assets/images/play_button.svg";
     stopAnimation();
   }
-});
+}
