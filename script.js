@@ -1,38 +1,60 @@
 const audioElements = document.querySelectorAll("audio");
-
 const squares = document.querySelectorAll(".square");
 const rectangle = document.querySelector(".container");
 const playButton = document.getElementById("play-button");
 const speedLabel = document.getElementById("speed");
 const speedRange = document.getElementById("speedRange");
-const squareData = [];
 
-const keyLen = squares.length;
-const squareSize = squares[0].offsetWidth;
-const availableWidth = rectangle.offsetWidth - keyLen * squareSize;
-const spacing = availableWidth / (keyLen - 1);
-const minHeight = squareSize * 2;
+/* ------------------------------ configuratoin ----------------------------- */
+
 let speed = 5;
+let minHeight = 50;
+let diffHeight = 10;
+
 speedLabel.innerText = speed;
 
-speedRange.addEventListener('input', () => {
+const keyLen = squares.length;
+
+speedRange.addEventListener("input", () => {
   speed = speedRange.value;
   speedLabel.innerText = speed;
 });
 
+let squareData = initializeSquareData();
 
-for (let i = 0; i < keyLen; i++) {
-  const y = 0;
+function initializeSquareData() {
+  const squareData = [];
+  for (let i = 0; i < keyLen; i++) {
+    const y = 0;
 
-  squareData.push({
-    element: squares[i],
-    y,
-    height: minHeight + ((keyLen - i - 1) / (keyLen - 1)) * minHeight,
-    directionY: 1,
-  });
+    squareData.push({
+      element: squares[i],
+      y,
+      height: minHeight + (keyLen - i - 1) * diffHeight,
+      directionY: 1,
+    });
 
-  squares[i].style.height = squareData[i].height + "px";
+    squares[i].style.height = squareData[i].height + "px";
+  }
+
+  return squareData;
 }
+
+function resetSquareData() {
+  squareData = initializeSquareData();
+  for (const square of squareData) {
+    square.element.style.transform = `translateY(${square.y}px)`;
+  }
+}
+
+function updateSquareData() {
+  for (const [i, square] of squareData.entries()) {
+    square.height = minHeight + (keyLen - i - 1) * diffHeight;
+    square.element.style.height = square.height + "px";
+  }
+}
+
+/* -------------------------------- animation ------------------------------- */
 
 let animationId = null;
 
@@ -66,20 +88,8 @@ function animate() {
 function stopAnimation() {
   cancelAnimationFrame(animationId);
   animationId = null;
-
-  for (const square of squareData) {
-    square.y = 0;
-    square.element.style.transform = `translateY(${square.y}px)`;
-  }
+  resetSquareData();
 }
-
-playButton.addEventListener("click", toggleAnimation);
-
-document.addEventListener("keydown", function(event) {
-  if (event.code === 'Space') {
-    toggleAnimation();
-  }
-});
 
 function toggleAnimation() {
   if (animationId === null) {
@@ -90,3 +100,11 @@ function toggleAnimation() {
     stopAnimation();
   }
 }
+
+playButton.addEventListener("click", toggleAnimation);
+
+document.addEventListener("keydown", function (event) {
+  if (event.code === "Space") {
+    toggleAnimation();
+  }
+});
