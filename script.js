@@ -22,45 +22,63 @@ speedRange.addEventListener("input", () => {
 
 let squareData = initializeSquareData();
 
+/**
+ * Initializes the keys array.
+ *
+ * @return {Array} The initialized keys array.
+ */
 function initializeSquareData() {
   const squareData = [];
+
   for (let i = 0; i < keyLen; i++) {
     const y = 0;
+    const height = minHeight + (keyLen - i - 1) * diffHeight;
 
     squareData.push({
       element: squares[i],
       y,
-      height: minHeight + (keyLen - i - 1) * diffHeight,
+      height,
       directionY: 1,
     });
 
-    squares[i].style.height = squareData[i].height + "px";
+    squares[i].style.height = `${height}px`;
   }
 
   return squareData;
 }
 
+/**
+ * Resets the keys by initializing it and updating the position of each keys to 0.
+ */
 function resetSquareData() {
   squareData = initializeSquareData();
+  
   for (const square of squareData) {
     square.element.style.transform = `translateY(${square.y}px)`;
   }
 }
 
+/**
+ * Updates the keys according to new configuration values.
+ */
 function updateSquareData() {
-  for (const [i, square] of squareData.entries()) {
-    square.height = minHeight + (keyLen - i - 1) * diffHeight;
-    square.element.style.height = square.height + "px";
-  }
+  squareData.forEach((square, index) => {
+    square.height = minHeight + (keyLen - index - 1) * diffHeight;
+    square.element.style.height = `${square.height}px`;
+  });
 }
 
 /* -------------------------------- animation ------------------------------- */
 
 let animationId = null;
 
+/**
+ * Animates the keys by updating their positions and applying necessary transformations.
+ */
 function animate() {
   for (const [index, square] of squareData.entries()) {
     square.y += speed * square.directionY;
+
     if (square.y < 0) {
       square.y = 0;
       square.directionY = 1;
